@@ -85,7 +85,10 @@ module.exports = (robot) ->
     if res.match[2] and res.match[2] != ""
       url += "?labelSelector=#{res.match[2].trim()}"
 
-    roles = robot.auth.userRoles res.envelope.user
+    roles = ["admin"]
+    if (robot.hasOwnProperty("auth"))
+      roles = robot.auth.userRoles res.envelope.user
+
     kubeapi.get {path: url, roles}, (err, response) ->
       if err
         robot.logger.error err
@@ -136,10 +139,11 @@ class Request
         return role
 
     for role in roles
-      key = @tokenMap[role]
-
-      if key
+      if @tokenMap[role]
         return role
+
+      if @tokenMap["bearer_"+role]
+        return "bearer_"+role
 
     return ""
 
@@ -156,9 +160,13 @@ class Request
     authOptions = {}
     user = @getKubeUser roles
     if user and user isnt ""
-      requestOptions['auth'] =
-        user: user
-        pass: @tokenMap[user]
+      if user.search 'bearer_' == 0
+        requestOptions['auth'] =
+          bearer: @tokenMap[user]
+      else
+        requestOptions['auth'] =
+          user: user
+          pass: @tokenMap[user]
 
     request.get requestOptions, (err, response, data) ->
 
@@ -173,15 +181,23 @@ class Request
   generateTokens = ->
     tokens = {}
     tokensVar = process.env.KUBE_TOKENS
-    if not tokensVar or tokensVar is ""
-      return tokens
 
-    tokenArr = tokensVar.split(',')
-    for token in tokenArr
-      keyPair = token.split(":")
-      unless keyPair.length is 2
-        continue
-      tokens[keyPair[0]] = keyPair[1]
+    if tokensVar
+      tokenArr = tokensVar.split(',')
+      for token in tokenArr
+        keyPair = token.split(":")
+        unless keyPair.length is 2
+          continue
+        tokens[keyPair[0]] = keyPair[1]
+
+    tokensVarBearer = process.env.KUBE_TOKENS_BEARER
+    if tokensVarBearer
+      tokenBearerArr = tokensVarBearer.split(',')
+      for token in tokenBearerArr
+        keyPair = token.split(":")
+        unless keyPair.length is 2
+          continue
+        tokens["bearer_" + keyPair[0]] = keyPair[1]
 
     return tokens
 

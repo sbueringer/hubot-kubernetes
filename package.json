@@ -16,15 +16,17 @@
   },
   "main": "index.coffee",
   "scripts": {
-    "test": "script/test"
+    "test": "mocha --compilers coffee:coffee-script/register test"
   },
   "dependencies": {
-    "coffee-script": "~1.6",
-    "request": "^2.67.0"
+    "coffee-script": "^1.9.3",
+    "request": "^2.67.0",
+    "source-map-support": "*"
   },
   "devDependencies": {
     "mocha": "*",
     "chai": "*",
+    "hubot-test-helper": "1.5.1",
     "sinon-chai": "*",
     "sinon": "*"
   }

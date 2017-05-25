@@ -1,5 +1,8 @@
 #!/bin/bash
 
+npm config set proxy "http://localhost:3128"
+npm config set https-proxy "http://localhost:3128"
+
 # Make sure everything is development forever
 export NODE_ENV=development
 
