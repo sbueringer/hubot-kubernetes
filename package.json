@@ -18,9 +18,6 @@
     "url": "https://github.com/sbueringer/hubot-kubernetes/issues"
   },
   "main": "index.coffee",
-  "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test"
-  },
   "dependencies": {
     "coffee-script": "^1.9.3",
     "request": "^2.67.0",
