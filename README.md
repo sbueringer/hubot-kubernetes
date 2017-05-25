@@ -4,21 +4,21 @@ Query your Kubernetes resources using Hubot.
 
 ## Installation
 
-Add `hubot-kubernetes` to your `package.json` file:
+Add `sbueringer-hubot-kubernetes` to your `package.json` file:
 
     "dependencies": {
       "hubot": ">= 2.5.1",
       "hubot-scripts": ">= 2.4.2",
       "hubot-redis-brain": "0.0.3",
       "hubot-auth": "^1.2.0",
-      "hubot-kubernetes": ">= 0.0.0"
+      "sbueringer-hubot-kubernetes": ">= 0.0.0"
     }
 
 Then add "hubot-kubernetes" to your `external-scripts.json` file:
 
-    ["hubot-kubernetes"]
+    ["sbueringer-hubot-kubernetes"]
 
-Finally, run `npm install hubot-kubernetes` and you're done!
+Finally, run `npm install sbueringer-hubot-kubernetes` and you're done!
 
 ### Configuration
 

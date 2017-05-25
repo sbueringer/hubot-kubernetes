@@ -1,8 +1,8 @@
 {
-  "name": "hubot-kubernetes",
+  "name": "sbueringer-hubot-kubernetes",
   "description": "Hubot Kubernetes integration",
-  "version": "0.3.0",
-  "author": "Can Yucel (https://github.com/canthefason)",
+  "version": "0.4.0",
+  "author": "Stefan Bueringer <npm.sbueringer@gmail.com>",
   "license": "MIT",
   "keywords": [
     "hubot",
@@ -12,7 +12,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github.com/canthefason/hubot-kubernetes"
+    "url": "git://github.com/sbueringer/hubot-kubernetes"
+  },
+  "bugs": {
+    "url": "https://github.com/sbueringer/hubot-kubernetes/issues"
   },
   "main": "index.coffee",
   "scripts": {
