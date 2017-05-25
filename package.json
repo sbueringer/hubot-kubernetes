@@ -1,5 +1,5 @@
 {
-  "name": "sbueringer-hubot-kubernetes",
+  "name": "hubot-sbueringer-kubernetes",
   "description": "Hubot Kubernetes integration",
   "version": "0.4.0",
   "author": "Stefan Bueringer <npm.sbueringer@gmail.com>",
