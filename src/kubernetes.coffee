@@ -63,13 +63,19 @@ module.exports = (robot) ->
         ">Cluster ip: #{clusterIP}\n>Ports: #{ps}\n>Age: #{timeSince(creationTimestamp)}\n"
       return reply
     'pods': (response) ->
-      reply = ''
+      reply =  "| P-Name   | Status | C-Name  | Restarts    | Image     | \n"
+      reply += "|----------|--------|---------|-------------|-----------| \n"
       for pod in response.items
         {metadata: {name}, status: {phase, startTime, containerStatuses}} = pod
-        reply += ">*#{name}*: \n>Status: #{phase} for: #{timeSince(startTime)} \n"
+        replyPod = "| #{name} | #{phase}  #{timeSince(startTime)} | "
+        firstContainer = true
         for cs in containerStatuses
           {name, restartCount, image} = cs
-          reply += ">Name: #{name} \n>Restarts: #{restartCount}\n>Image: #{image}\n"
+          if firstContainer
+            reply += replyPod + " #{name} | #{restartCount} | #{image} | \n"
+            firstContainer = false
+          else
+            reply += " | -\"- | -\"- | #{name} | #{restartCount} | #{image} | \n"
 
       return reply
 
@@ -98,7 +104,7 @@ module.exports = (robot) ->
 
       reply = "\n"
       decorateFn = decorateFnMap[type] or ->
-      reply = "Here is the list of #{type} running on *#{namespace}*\n"
+      reply = "Here is the list of #{type} running on *#{namespace}*:\n\n"
       reply += decorateFn response
 
       res.reply reply
@@ -134,7 +140,7 @@ class Request
 
   getKubeUser: (roles) ->
     # if there is only one token, then return it right away
-    if @tokenMap.length is 1
+    if Object.keys(@tokenMap).length is 1
       for role, token of @tokenMap
         return role
 
@@ -157,10 +163,10 @@ class Request
       requestOptions.agentOptions =
         ca: @ca
 
-    authOptions = {}
     user = @getKubeUser roles
+
     if user and user isnt ""
-      if user.search 'bearer_' == 0
+      if /^bearer_/.test(user)
         requestOptions['auth'] =
           bearer: @tokenMap[user]
       else
