@@ -52,15 +52,15 @@ module.exports = (robot) ->
 
       return reply
     'services': (response) ->
-      reply = ''
+      reply =  "| Name     | Cluster-IP | Ports   | Age         | \n"
+      reply += "|----------|------------|---------|-------------| \n"
       for service in response.items
         {metadata: {creationTimestamp}, spec: {clusterIP, ports}} = service
         ps = ""
         for p in ports
           {protocol, port} = p
           ps += "#{port}/#{protocol} "
-        reply += ">*#{service.metadata.name}*:\n" +
-        ">Cluster ip: #{clusterIP}\n>Ports: #{ps}\n>Age: #{timeSince(creationTimestamp)}\n"
+        reply += "| #{service.metadata.name} | #{clusterIP} | #{ps} | #{timeSince(creationTimestamp)} | \n"
       return reply
     'pods': (response) ->
       reply =  "| P-Name   | Status | C-Name  | Restarts    | Image     | \n"
